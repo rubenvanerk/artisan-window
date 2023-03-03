@@ -45,6 +45,7 @@ class Example extends Command
         })    
     }    
 }
+```
 
 This wil produce something like this:
 
