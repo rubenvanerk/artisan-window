@@ -5,55 +5,51 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/rubenvanerk/artisan-window/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/rubenvanerk/artisan-window/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/rubenvanerk/artisan-window.svg?style=flat-square)](https://packagist.org/packages/rubenvanerk/artisan-window)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
-
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/artisan-window.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/artisan-window)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+A simple trait to create a fixed-size Artisan console window.
 
 ## Installation
 
-You can install the package via composer:
+You can just copy the trait to your own project or install the package via composer:
 
 ```bash
 composer require rubenvanerk/artisan-window
 ```
 
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="artisan-window-migrations"
-php artisan migrate
-```
-
-You can publish the config file with:
-
-```bash
-php artisan vendor:publish --tag="artisan-window-config"
-```
-
-This is the contents of the published config file:
-
-```php
-return [
-];
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="artisan-window-views"
-```
-
 ## Usage
 
+In your console command, add the `HasWindows` trait.
+Next, you can call the `window` function. It takes three arguments:
+
+- The title of the window
+- The max number of lines
+- A function
+
+In the function you can output anything you'd like. If the output doesn't fit, it will scroll out of the window.
+
 ```php
-$artisanWindow = new RubenVanErk\ArtisanWindow();
-echo $artisanWindow->echoPhrase('Hello, RubenVanErk!');
+class Example extends Command
+{
+    use \RubenVanErk\ArtisanWindow\Traits\HasWindows;
+    
+    public function handle()
+    {
+        $this->window('Never Gonna Give You Up', 5, function () {
+            // ...
+            $this->info('Never gonna give you up');
+            $this->info('Never gonna let you down');
+            $this->info('Never gonna run around and desert you');
+            $this->info('Never gonna make you cry');
+            $this->info('Never gonna say goodbye');
+            $this->info('Never gonna tell a lie and hurt you');
+            // ...
+        })    
+    }    
+}
+
+This wil produce something like this:
+
+[![asciicast](https://asciinema.org/a/pgiWJS9TgVju339xnDfxOycM5.svg)](https://asciinema.org/a/pgiWJS9TgVju339xnDfxOycM5)
+
 ```
 
 ## Testing
